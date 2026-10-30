@@ -1,0 +1,57 @@
+name: Build Vexcord APK
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Vexcord repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Get Revenge Manager source
+        run: |
+          git clone --depth 1 https://github.com/revenge-mod/revenge-manager.git manager
+
+      - name: Apply Vexcord branding
+        working-directory: manager
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path("app/src/main/res/values/strings.xml")
+          s = p.read_text()
+          s = s.replace("<string name=\"app_name\" translatable=\"false\">Revenge Manager</string>",
+                        "<string name=\"app_name\" translatable=\"false\">Vexcord Manager</string>")
+          p.write_text(s)
+          p = Path("app/build.gradle.kts")
+          s = p.read_text()
+          s = s.replace('buildConfigField("String", "MOD_NAME", "\\"Revenge\\"")',
+                        'buildConfigField("String", "MOD_NAME", "\\"Vexcord\\"")')
+          s = s.replace('buildConfigField("String", "MANAGER_NAME", "\\"RevengeManager\\"")',
+                        'buildConfigField("String", "MANAGER_NAME", "\\"VexcordManager\\"")')
+          p.write_text(s)
+          PY
+
+      - name: Build APK
+        working-directory: manager
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleRelease --no-daemon
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: vexcord-manager-apk
+          path: manager/app/build/outputs/apk/release/*.apk
+          if-no-files-found: error
+          retention-days: 14
