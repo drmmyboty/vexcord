@@ -5,75 +5,508 @@
       "id": "amoled-theme",
       "name": "AMOLED Black",
       "version": "0.1.0",
-      "description": "A true-black theme preset for supported Vexcord interface surfaces.",
+      "description": "A true-black theme preset for compatible interface surfaces.",
       "category": "Appearance",
-      "status": "planned",
-      "permissions": ["theme"]
+      "status": "implemented",
+      "permissions": [
+        "theme"
+      ]
     },
     {
       "id": "theme-manager",
       "name": "Theme Manager",
       "version": "0.1.0",
-      "description": "Organize and switch compatible theme presets.",
+      "description": "List and apply Vexcord theme presets.",
       "category": "Appearance",
-      "status": "planned",
-      "permissions": ["theme", "local-storage"]
+      "status": "implemented",
+      "permissions": [
+        "theme",
+        "local-storage"
+      ]
     },
     {
       "id": "quick-replies",
       "name": "Quick Replies",
       "version": "0.1.0",
-      "description": "Save reusable reply snippets locally for supported chat interfaces.",
+      "description": "Store and retrieve reusable reply snippets locally.",
       "category": "Productivity",
-      "status": "planned",
-      "permissions": ["local-storage", "chat-ui"]
+      "status": "implemented",
+      "permissions": [
+        "local-storage"
+      ]
     },
     {
       "id": "message-bookmarks",
       "name": "Message Bookmarks",
       "version": "0.1.0",
-      "description": "Bookmark messages that are accessible to the user, where supported.",
+      "description": "Store bookmarks for messages you choose to save.",
       "category": "Productivity",
-      "status": "planned",
-      "permissions": ["local-storage", "chat-ui"]
+      "status": "implemented",
+      "permissions": [
+        "local-storage"
+      ]
+    },
+    {
+      "id": "custom-timestamps",
+      "name": "Custom Timestamps",
+      "version": "0.1.0",
+      "description": "Format timestamps as 12-hour or 24-hour strings.",
+      "category": "Appearance",
+      "status": "implemented",
+      "permissions": []
+    },
+    {
+      "id": "markdown-preview",
+      "name": "Markdown Preview",
+      "version": "0.1.0",
+      "description": "Preview basic Markdown formatting before sending.",
+      "category": "Chat",
+      "status": "implemented",
+      "permissions": []
+    },
+    {
+      "id": "plugin-backup",
+      "name": "Plugin Backup",
+      "version": "0.1.0",
+      "description": "Export and import Vexcord plugin settings as JSON.",
+      "category": "Developer Tools",
+      "status": "implemented",
+      "permissions": [
+        "local-storage"
+      ]
+    },
+    {
+      "id": "plugin-error-console",
+      "name": "Plugin Error Console",
+      "version": "0.1.0",
+      "description": "Collect and inspect plugin errors locally.",
+      "category": "Developer Tools",
+      "status": "implemented",
+      "permissions": [
+        "local-storage"
+      ]
     },
     {
       "id": "chat-translator",
       "name": "Chat Translator",
       "version": "0.1.0",
-      "description": "Translate selected text through a configured translation provider; no provider is bundled.",
+      "description": "Translate selected text through a configured translation provider.",
       "category": "Productivity",
       "status": "planned",
-      "permissions": ["chat-ui"]
+      "permissions": [
+        "chat-ui"
+      ]
     },
     {
       "id": "account-switcher",
       "name": "Account Switcher",
       "version": "0.1.0",
-      "description": "A shortcut to supported account controls; never stores or extracts account tokens.",
+      "description": "Shortcut to supported account controls; no token access.",
       "category": "Account",
       "status": "planned",
       "permissions": [],
-      "restrictions": ["No token access", "No authentication bypass"]
+      "restrictions": [
+        "No token access",
+        "No authentication bypass"
+      ]
     },
     {
       "id": "nitro-style",
       "name": "Nitro Style Preview",
       "version": "0.1.0",
-      "description": "Cosmetic previews and local styling only; does not unlock paid Nitro entitlements.",
+      "description": "Cosmetic Nitro-style preview only; no paid entitlements unlocked.",
       "category": "Appearance",
       "status": "planned",
-      "permissions": ["theme"]
+      "permissions": [
+        "theme"
+      ],
+      "restrictions": [
+        "Cosmetic only",
+        "Does not unlock paid features"
+      ]
     },
     {
       "id": "local-chat-archive",
       "name": "Local Chat Archive",
       "version": "0.1.0",
-      "description": "A transparent local archive for content the user is authorized to save, where supported.",
+      "description": "Transparent local archive for content you are authorized to save.",
       "category": "Privacy",
       "status": "planned",
-      "permissions": ["local-storage", "chat-ui"],
-      "restrictions": ["No covert collection", "No upload by default"]
+      "permissions": [
+        "local-storage",
+        "chat-ui"
+      ],
+      "restrictions": [
+        "No covert collection",
+        "No upload by default"
+      ]
+    },
+    {
+      "id": "custom-backgrounds",
+      "name": "Custom Backgrounds",
+      "version": "0.1.0",
+      "description": "Choose backgrounds for supported interface surfaces.",
+      "category": "Appearance",
+      "status": "planned",
+      "permissions": [
+        "theme"
+      ]
+    },
+    {
+      "id": "font-changer",
+      "name": "Custom Fonts",
+      "version": "0.1.0",
+      "description": "Choose supported interface fonts.",
+      "category": "Appearance",
+      "status": "planned",
+      "permissions": [
+        "theme"
+      ]
+    },
+    {
+      "id": "accent-color-editor",
+      "name": "Accent Color Editor",
+      "version": "0.1.0",
+      "description": "Customize supported interface accent colors.",
+      "category": "Appearance",
+      "status": "planned",
+      "permissions": [
+        "theme"
+      ]
+    },
+    {
+      "id": "compact-mode",
+      "name": "Compact Mode",
+      "version": "0.1.0",
+      "description": "Reduce spacing in compatible interface layouts.",
+      "category": "Appearance",
+      "status": "planned",
+      "permissions": [
+        "theme"
+      ]
+    },
+    {
+      "id": "animated-themes",
+      "name": "Animated Themes",
+      "version": "0.1.0",
+      "description": "Apply compatible animated backgrounds.",
+      "category": "Appearance",
+      "status": "planned",
+      "permissions": [
+        "theme"
+      ]
+    },
+    {
+      "id": "custom-app-icon",
+      "name": "Custom App Icon",
+      "version": "0.1.0",
+      "description": "Choose from supported Vexcord launcher icons.",
+      "category": "Appearance",
+      "status": "planned",
+      "permissions": []
+    },
+    {
+      "id": "profile-decorator",
+      "name": "Profile Decorator",
+      "version": "0.1.0",
+      "description": "Preview local profile layout decorations.",
+      "category": "Appearance",
+      "status": "planned",
+      "permissions": [
+        "theme"
+      ]
+    },
+    {
+      "id": "theme-store",
+      "name": "Theme Store",
+      "version": "0.1.0",
+      "description": "Browse community theme packages with metadata and permission review.",
+      "category": "Appearance",
+      "status": "planned",
+      "permissions": [
+        "theme",
+        "local-storage"
+      ]
+    },
+    {
+      "id": "advanced-search",
+      "name": "Advanced Search",
+      "version": "0.1.0",
+      "description": "Search locally available and authorized chat data.",
+      "category": "Chat",
+      "status": "planned",
+      "permissions": [
+        "chat-ui"
+      ]
+    },
+    {
+      "id": "edit-history",
+      "name": "Edit History",
+      "version": "0.1.0",
+      "description": "Track edits only where prior versions are legitimately available.",
+      "category": "Chat",
+      "status": "planned",
+      "permissions": [
+        "chat-ui",
+        "local-storage"
+      ]
+    },
+    {
+      "id": "deleted-message-indicator",
+      "name": "Deleted Message Indicator",
+      "version": "0.1.0",
+      "description": "Display deletion events only when reliably observable.",
+      "category": "Chat",
+      "status": "planned",
+      "permissions": [
+        "chat-ui"
+      ]
+    },
+    {
+      "id": "chat-exporter",
+      "name": "Chat Exporter",
+      "version": "0.1.0",
+      "description": "Export content you are authorized to save.",
+      "category": "Privacy",
+      "status": "planned",
+      "permissions": [
+        "chat-ui",
+        "local-storage"
+      ]
+    },
+    {
+      "id": "custom-emojis",
+      "name": "Emoji Organizer",
+      "version": "0.1.0",
+      "description": "Organize accessible emoji favorites.",
+      "category": "Media",
+      "status": "planned",
+      "permissions": [
+        "local-storage"
+      ]
+    },
+    {
+      "id": "gif-favorites",
+      "name": "GIF Favorites",
+      "version": "0.1.0",
+      "description": "Organize GIF favorites.",
+      "category": "Media",
+      "status": "planned",
+      "permissions": [
+        "local-storage"
+      ]
+    },
+    {
+      "id": "media-downloader",
+      "name": "Media Downloader",
+      "version": "0.1.0",
+      "description": "Save media you are authorized to download.",
+      "category": "Media",
+      "status": "planned",
+      "permissions": [
+        "media"
+      ]
+    },
+    {
+      "id": "image-preview-enhancer",
+      "name": "Image Preview Enhancer",
+      "version": "0.1.0",
+      "description": "Add zoom helpers to supported image previews.",
+      "category": "Media",
+      "status": "planned",
+      "permissions": [
+        "media"
+      ]
+    },
+    {
+      "id": "audio-player-customizer",
+      "name": "Audio Player Customizer",
+      "version": "0.1.0",
+      "description": "Customize supported audio player controls.",
+      "category": "Media",
+      "status": "planned",
+      "permissions": [
+        "media"
+      ]
+    },
+    {
+      "id": "volume-booster",
+      "name": "Volume Booster",
+      "version": "0.1.0",
+      "description": "Adjust supported audio output levels.",
+      "category": "Voice",
+      "status": "planned",
+      "permissions": []
+    },
+    {
+      "id": "voice-activity-indicator",
+      "name": "Voice Activity Indicator",
+      "version": "0.1.0",
+      "description": "Customize visible voice activity indicators.",
+      "category": "Voice",
+      "status": "planned",
+      "permissions": [
+        "theme"
+      ]
+    },
+    {
+      "id": "reminders",
+      "name": "Reminder Plugin",
+      "version": "0.1.0",
+      "description": "Set local reminders for tasks and messages.",
+      "category": "Productivity",
+      "status": "planned",
+      "permissions": [
+        "local-storage",
+        "notifications"
+      ]
+    },
+    {
+      "id": "unread-channel-tracker",
+      "name": "Unread Channel Tracker",
+      "version": "0.1.0",
+      "description": "Highlight unread channels where supported.",
+      "category": "Productivity",
+      "status": "planned",
+      "permissions": [
+        "chat-ui"
+      ]
+    },
+    {
+      "id": "custom-status-scheduler",
+      "name": "Custom Status Scheduler",
+      "version": "0.1.0",
+      "description": "Schedule supported status changes.",
+      "category": "Productivity",
+      "status": "planned",
+      "permissions": [
+        "notifications",
+        "local-storage"
+      ]
+    },
+    {
+      "id": "notification-rules",
+      "name": "Notification Rules",
+      "version": "0.1.0",
+      "description": "Customize notifications by channel where supported.",
+      "category": "Productivity",
+      "status": "planned",
+      "permissions": [
+        "notifications"
+      ]
+    },
+    {
+      "id": "focus-mode",
+      "name": "Focus Mode",
+      "version": "0.1.0",
+      "description": "Temporarily hide distracting interface elements.",
+      "category": "Productivity",
+      "status": "planned",
+      "permissions": [
+        "theme"
+      ]
+    },
+    {
+      "id": "server-notes",
+      "name": "Server Notes",
+      "version": "0.1.0",
+      "description": "Keep private local notes about servers.",
+      "category": "Productivity",
+      "status": "planned",
+      "permissions": [
+        "local-storage"
+      ]
+    },
+    {
+      "id": "friend-notes",
+      "name": "Friend Notes",
+      "version": "0.1.0",
+      "description": "Keep private local notes about contacts.",
+      "category": "Productivity",
+      "status": "planned",
+      "permissions": [
+        "local-storage"
+      ]
+    },
+    {
+      "id": "custom-css-editor",
+      "name": "Custom CSS Editor",
+      "version": "0.1.0",
+      "description": "Edit CSS for supported surfaces with safe local preview.",
+      "category": "Developer Tools",
+      "status": "planned",
+      "permissions": [
+        "theme"
+      ]
+    },
+    {
+      "id": "layout-editor",
+      "name": "Layout Editor",
+      "version": "0.1.0",
+      "description": "Rearrange supported interface components.",
+      "category": "Developer Tools",
+      "status": "planned",
+      "permissions": [
+        "theme"
+      ]
+    },
+    {
+      "id": "plugin-permissions",
+      "name": "Plugin Permissions",
+      "version": "0.1.0",
+      "description": "Display declared permissions for each plugin.",
+      "category": "Developer Tools",
+      "status": "planned",
+      "permissions": []
+    },
+    {
+      "id": "plugin-importer",
+      "name": "Plugin Importer",
+      "version": "0.1.0",
+      "description": "Import compatible plugin packages after validation.",
+      "category": "Developer Tools",
+      "status": "planned",
+      "permissions": [
+        "local-storage"
+      ]
+    },
+    {
+      "id": "compatibility-checker",
+      "name": "Compatibility Checker",
+      "version": "0.1.0",
+      "description": "Check plugin version compatibility metadata.",
+      "category": "Developer Tools",
+      "status": "planned",
+      "permissions": []
+    },
+    {
+      "id": "update-checker",
+      "name": "Update Checker",
+      "version": "0.1.0",
+      "description": "Check Vexcord version metadata.",
+      "category": "Developer Tools",
+      "status": "planned",
+      "permissions": []
+    },
+    {
+      "id": "safe-mode",
+      "name": "Safe Mode",
+      "version": "0.1.0",
+      "description": "Start with all plugins disabled after failures.",
+      "category": "Developer Tools",
+      "status": "planned",
+      "permissions": []
+    },
+    {
+      "id": "plugin-hub",
+      "name": "Vexcord Plugin Hub",
+      "version": "0.1.0",
+      "description": "Browse, install, update, disable and remove compatible plugins.",
+      "category": "Developer Tools",
+      "status": "planned",
+      "permissions": [
+        "local-storage"
+      ]
     }
   ]
 }
