@@ -4,12 +4,6 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
-    inputs:
-      client_name:
-        description: "Display name for the patched Discord app"
-        required: true
-        default: "Vexcord"
-        type: string
 
 permissions:
   contents: read
@@ -33,7 +27,7 @@ jobs:
       - name: Apply Vexcord branding and client name
         working-directory: manager
         env:
-          CLIENT_NAME: ${{ github.event.inputs.client_name || 'Vexcord' }}
+          CLIENT_NAME: Vexcord
         run: |
           python3 - <<'PY'
           import os
@@ -47,10 +41,15 @@ jobs:
           strings = Path("app/src/main/res/values/strings.xml")
           content = strings.read_text()
           old = '<string name="app_name" translatable="false">Revenge Manager</string>'
-          new = '<string name="app_name" translatable="false">Vexcord Installer</string>'
+          new = '<string name="app_name" translatable="false">Vexcord</string>'
           if old not in content:
               raise SystemExit("Could not find upstream manager app_name string; stopping rather than making an unbranded APK.")
-          strings.write_text(content.replace(old, new, 1))
+          content = content.replace(old, new, 1)
+          # Brand visible installer labels as Vexcord; keep upstream license/author notices intact.
+          content = content.replace("Downloading Revenge", "Downloading Vexcord")
+          content = content.replace("Injecting Revenge", "Injecting Vexcord")
+          content = content.replace("install Revenge for Discord", "install Vexcord for Discord")
+          strings.write_text(content)
 
           gradle = Path("app/build.gradle.kts")
           content = gradle.read_text()
@@ -58,7 +57,7 @@ jobs:
               'buildConfigField("String", "MOD_NAME", "\\\"Revenge\\\"")':
                   'buildConfigField("String", "MOD_NAME", ' + '"' + '\\\"' + client_name.replace('\\\\', '\\\\\\\\').replace('"', '\\\\"') + '\\\"' + '"' + ')',
               'buildConfigField("String", "MANAGER_NAME", "\\\"RevengeManager\\\"")':
-                  'buildConfigField("String", "MANAGER_NAME", "\\\"VexcordInstaller\\\"")',
+                  'buildConfigField("String", "MANAGER_NAME", "\\\"Vexcord\\\"")',
               'buildConfigField("String", "REPO", "\\\"revenge-mod/bundle\\\"")':
                   'buildConfigField("String", "REPO", "\\\"revenge-mod/revenge-bundle\\\"")',
           }
