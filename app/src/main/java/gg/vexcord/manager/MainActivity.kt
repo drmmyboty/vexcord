@@ -7,7 +7,7 @@ import android.graphics.Typeface
 import android.view.Gravity
 import android.view.View
 import android.widget.*
-import org.json.JSONArray
+import org.json.JSONObject
 
 class MainActivity : Activity() {
     private val bg = Color.rgb(7, 10, 16)
@@ -51,8 +51,9 @@ class MainActivity : Activity() {
         content.addView(space(18))
         content.addView(section("PLUGIN LIBRARY"))
         val catalog = try {
-            JSONArray(assets.open("plugin-catalog.json").bufferedReader().use { it.readText() })
-        } catch (_: Exception) { JSONArray() }
+            JSONObject(assets.open("plugin-catalog.json").bufferedReader().use { it.readText() })
+                .optJSONArray("plugins") ?: org.json.JSONArray()
+        } catch (_: Exception) { org.json.JSONArray() }
 
         if (catalog.length() == 0) {
             content.addView(cardText("Catalog unavailable", "The plugin catalog could not be loaded."))
