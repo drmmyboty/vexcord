@@ -73,8 +73,8 @@ jobs:
               'MODDED_APP_ICON_ALPHA': '0xFF5865F2',
               'MODDED_APP_ICON_OTHER': '0xFF5865F2',
           }.items():
-              pattern = r'(buildConfigField\\("int", "' + key + r'", )"0x[0-9A-Fa-f]+"(\\))'
-              content, count = re.subn(pattern, r'\\g<1>"' + value + r'"\\2', content, count=1)
+              pattern = r'(buildConfigField\("int", "' + key + r'", )"0x[0-9A-Fa-f]+"(\))'
+              content, count = re.subn(pattern, r'\1"' + value + r'"\2', content, count=1)
               if count != 1:
                   raise SystemExit("Could not set Discord-style icon color for " + key)
 
