@@ -1,0 +1,38 @@
+name: Build Vexcord client bundle
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Vexcord repository
+        uses: actions/checkout@v4
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Get Revenge bundle source
+        run: git clone --depth 1 https://github.com/revenge-mod/revenge-bundle.git revenge-bundle
+
+      - name: Install dependencies
+        working-directory: revenge-bundle
+        run: bun install --frozen-lockfile
+
+      - name: Build baseline client bundle
+        working-directory: revenge-bundle
+        run: bun run build
+
+      - name: Upload baseline bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: vexcord-client-bundle-baseline
+          path: revenge-bundle/dist/revenge.js
+          if-no-files-found: error
+          retention-days: 7
