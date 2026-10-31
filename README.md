@@ -1,37 +1,43 @@
 # Vexcord
 
-Vexcord is an Android customization project for people who want more control over their Discord experience, with a dark interface, themes, and compatible plugins.
+Vexcord is an independent Android customization project for Discord, using the open-source Revenge project as its technical foundation.
 
-## What we're working toward
+## Current build approach
 
-- AMOLED-friendly dark appearance with electric-blue accents
-- Custom themes, fonts, and accent colours
-- Theme import and export
-- A plugin manager for Android-compatible plugins
-- Optional quality-of-life features, subject to compatibility and testing
+Vexcord is being built as a **branded installer that installs a modified Discord app alongside the official Discord app**. Revenge works inside Discord; its JavaScript bundle is not a standalone Android app. The installer APK and the modified Discord app are two different things.
 
-Not every desktop Vencord plugin works on Android. Only features that are implemented and tested will be described as available.
+The GitHub Actions workflow named **Build Vexcord Android APK** builds the Vexcord-branded installer. After a successful run, download the artifact named `vexcord-installer-apk` from that workflow run. This installer build is not yet a finished Vexcord client release, and the build must complete successfully before an APK can be considered available.
 
-## Project status
+## Planned features
 
-Vexcord is currently in early development. **There is no verified APK release yet.** Please don't install unofficial files claiming to be a Vexcord release unless they are published in this repository's official Releases section.
+- AMOLED-friendly dark appearance with electric-blue branding
+- Theme and font customization using compatible Revenge features
+- Theme import/export where supported
+- Compatible plugin support
+- Further Vexcord-specific features after they are implemented and tested
 
-## Downloads
+Not every desktop Vencord plugin works on Android. Features are not considered available until implemented and tested.
 
-When a tested build is available, it will be published on the [Releases page](https://github.com/drmmyboty/vexcord/releases). If the Releases page has no downloadable APK, a public release is not available yet.
+## Build status and downloads
+
+- **Installer APK:** generated through GitHub Actions; check the latest workflow run and its artifacts.
+- **Finished, tested Vexcord release:** not yet published.
+- **Releases page:** https://github.com/drmmyboty/vexcord/releases
+
+If the workflow fails, no APK artifact will be available from that run. If there is no APK in the artifact or Releases page, do not assume a build exists.
 
 ## Safety and privacy
 
-- Vexcord is an unofficial community project and is not affiliated with or endorsed by Discord.
-- Use your account responsibly and review Discord's terms before using client modifications.
-- Never share your Discord password, account token, or recovery codes with anyone.
-- Only install releases from sources you trust.
-- Message logging, if added, will not recover messages from before logging was enabled and should be used in accordance with applicable rules and other users' privacy.
+- Vexcord is unofficial and is not affiliated with or endorsed by Discord.
+- Client modifications can break when Discord updates and may carry account or service risks. Review Discord's terms and use your account responsibly.
+- Never share your Discord password, account token, or recovery codes.
+- Do not add private-message logging or collect other people's data without a legitimate, consent-based reason. Any future logging feature must respect privacy and applicable rules.
+- Only install builds you trust and review their source.
 
-## Feedback and contributions
+## Contributions
 
-Bug reports, feature suggestions, and contributions are welcome. Please describe your Android version, device model, what you expected to happen, and what actually happened. **Never include passwords, tokens, private messages, or other sensitive information** in a report.
+Bug reports and feature suggestions are welcome. Include your Android version, device model, expected behavior, and actual behavior. Never include passwords, tokens, private messages, or other sensitive information in reports.
 
 ## Open-source foundation
 
-Vexcord's planned technical foundation is [Revenge](https://github.com/revenge-mod/revenge-bundle), an open-source Discord Android client modification. Vexcord is an independent project; please review the upstream project's license and notices before redistributing any derivative work.
+Vexcord's current foundation is [Revenge Manager](https://github.com/revenge-mod/revenge-manager) and [Revenge Bundle](https://github.com/revenge-mod/revenge-bundle). These upstream projects have their own licenses and branding; Vexcord is an independent project. Review upstream license notices before redistributing derivative builds.
