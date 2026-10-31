@@ -1,0 +1,34 @@
+name: Validate Vexcord Patch Engine
+
+on:
+  push:
+    paths:
+      - "patch-engine/**"
+      - ".github/workflows/validate-patch-engine.yml"
+  pull_request:
+    paths:
+      - "patch-engine/**"
+      - ".github/workflows/validate-patch-engine.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out Vexcord
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Validate catalog
+        working-directory: patch-engine
+        run: |
+          npm run validate
+          node --check index.js
+      - name: Print plugin catalog
+        working-directory: patch-engine
+        run: npm run list
