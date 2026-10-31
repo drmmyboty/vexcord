@@ -24,11 +24,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Validate catalog
+      - name: Validate catalog and registry
         working-directory: patch-engine
         run: |
           npm run validate
           node --check index.js
+          for file in plugins/*.js; do node --check "$file"; done
       - name: Print plugin catalog
         working-directory: patch-engine
         run: npm run list
