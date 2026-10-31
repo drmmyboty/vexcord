@@ -1,10 +1,10 @@
 # Vexcord
 
-Vexcord is an unofficial Android customization project for Discord. The current Android installer uses the open-source Revenge Manager project as its technical foundation; required upstream attribution and license notices must remain.
+Vexcord is an unofficial Android customization project for Discord. The Android Manager is an original native Android app built from this repository. It no longer clones or renames Revenge Manager. The separate client-bundle workflow still uses upstream Revenge Bundle as a baseline and preserves its required license and attribution.
 
 ## Current status
 
-- **Android installer:** Vexcord-branded installer scaffold; not yet an independent patching app.
+- **Android manager:** original native Kotlin app with Vexcord branding, plugin catalog, and on-device preference toggles.
 - **Patch-engine prototype:** Node.js catalog, utility-module registry, and local enabled-state manager under `patch-engine/`.
 - **Standalone utility modules:** eight working, framework-independent helpers are registered. They are not yet injected into or connected to Discord Android.
 - **Discord patching:** no finished modified Discord APK or integrated Android plugin runtime is available yet.
@@ -34,7 +34,7 @@ These modules provide utility logic and can be tested independently. They do not
 
 The catalog includes appearance plugins (AMOLED Black, Theme Manager, Nitro Style Preview, Custom Backgrounds, Custom Fonts, Accent Color Editor, Compact Mode, Animated Themes, Custom App Icon, Profile Decorator, Theme Store); chat and account plugins (Quick Replies, Message Bookmarks, Chat Translator, Account Switcher, Advanced Search, Edit History, Deleted Message Indicator, Chat Exporter, Local Chat Archive); media and voice plugins (Emoji Organizer, GIF Favorites, Media Downloader, Image Preview Enhancer, Audio Player Customizer, Volume Booster, Voice Activity Indicator); productivity plugins (Reminder, Unread Channel Tracker, Custom Status Scheduler, Notification Rules, Focus Mode, Server Notes, Friend Notes); and developer tools (Plugin Error Console, Plugin Backup, Plugin Permissions, Plugin Importer, Compatibility Checker, Update Checker, Safe Mode, Custom CSS Editor, Layout Editor, Plugin Hub, Markdown Preview, Custom Timestamps).
 
-Catalog entries marked `planned` are not working plugins yet. The next engineering milestone is connecting the standalone utilities to a native Android manager and a tested, compatible patch pipeline.
+Catalog entries marked `planned` are not working plugins yet. The next engineering milestone is connecting these utilities to Android storage and a tested, compatible patch pipeline.
 
 ## Security and limits
 
@@ -47,11 +47,10 @@ Catalog entries marked `planned` are not working plugins yet. The next engineeri
 
 ## Build status
 
-The GitHub Actions workflow named **Build Vexcord Android APK** builds the current installer scaffold; it does not prove a patched client works. The **Validate Vexcord Patch Engine** workflow checks the catalog and JavaScript modules.
+The GitHub Actions workflow named **Build Vexcord Android APK** builds the original Vexcord Manager app; it does not prove a patched client works. The **Validate Vexcord Patch Engine** workflow checks the catalog and JavaScript modules.
 
 - [GitHub Actions](https://github.com/drmmyboty/vexcord/actions)
 - [Releases](https://github.com/drmmyboty/vexcord/releases)
-- [Revenge Manager upstream](https://github.com/revenge-mod/revenge-manager)
 - [Revenge Bundle upstream](https://github.com/revenge-mod/revenge-bundle)
 
 Vexcord is not affiliated with or endorsed by Discord. Preserve all required upstream license and attribution notices.
