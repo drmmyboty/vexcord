@@ -1,60 +1,57 @@
 # Vexcord
 
-Vexcord is an independent Android customization project for Discord, using the open-source Revenge project as its current technical foundation.
+Vexcord is an unofficial Android customization project for Discord. The current Android installer uses the open-source Revenge Manager project as its technical foundation; required upstream attribution and license notices must remain.
 
-## Current build status
+## Current status
 
-Vexcord currently has two separate parts:
+- **Android installer:** Vexcord-branded installer scaffold; not yet an independent patching app.
+- **Patch-engine prototype:** Node.js catalog, utility-module registry, and local enabled-state manager under `patch-engine/`.
+- **Standalone utility modules:** eight working, framework-independent helpers are registered. They are not yet injected into or connected to Discord Android.
+- **Discord patching:** no finished modified Discord APK or integrated Android plugin runtime is available yet.
 
-- **Android installer:** a Vexcord-branded installer build based on the upstream Revenge Manager project.
-- **Patch-engine foundation:** a new Node.js catalog/state-management prototype under `patch-engine/`.
+## Patch engine commands
 
-The patch engine currently validates plugin catalog metadata and defines a local enabled-plugin state format. It does **not** yet inject patches into Discord, load runtime plugins, or produce a finished modified Discord APK. Catalog entries marked `planned` are ideas, not working features.
+Requires Node.js 18 or newer. From `patch-engine/`:
 
-## Patch engine
+- `npm run validate` validates catalog IDs and checks that every entry marked implemented has a module.
+- `npm run list` lists the 46 catalog entries and distinguishes registered utility modules from planned plugins.
+- `npm run enable -- <plugin-id>` and `npm run disable -- <plugin-id>` update local enabled-state metadata for registered modules. This does not activate code inside Discord.
 
-From the `patch-engine` directory with Node.js 18 or newer:
+## Registered utility modules
 
-- `npm run validate` checks catalog metadata.
-- `npm run list` lists catalog entries and local state.
-- `npm run enable -- <plugin-id>` and `npm run disable -- <plugin-id>` manage state only for plugins marked implemented. Planned entries are intentionally blocked.
+- `amoled-theme.js`: true-black theme palette and a supported adapter hook.
+- `theme-manager.js`: three theme presets and adapter-based application.
+- `quick-replies.js`: local in-memory reusable reply snippets with JSON export.
+- `message-bookmarks.js`: local in-memory message bookmarks with JSON export.
+- `custom-timestamps.js`: 12-hour or 24-hour timestamp formatting.
+- `markdown-preview.js`: escaped basic Markdown preview HTML.
+- `plugin-backup.js`: export/import settings JSON with format validation.
+- `plugin-error-console.js`: bounded in-memory error log with JSON export.
 
-The initial catalog includes AMOLED Black, Theme Manager, Quick Replies, Message Bookmarks, Chat Translator, Account Switcher, Nitro Style Preview, and Local Chat Archive. These are currently marked **planned**.
+These modules provide utility logic and can be tested independently. They do not currently have Discord Android UI hooks, persistent Android storage integration, or a secure third-party plugin sandbox.
 
-Plugin packages will need manifest validation, version compatibility checks, permission review, and safe install/uninstall behavior before runtime execution is added. Do not treat a plugin catalog entry as an implemented feature.
+## Plugin catalog
 
-## Planned architecture
+The catalog includes appearance plugins (AMOLED Black, Theme Manager, Nitro Style Preview, Custom Backgrounds, Custom Fonts, Accent Color Editor, Compact Mode, Animated Themes, Custom App Icon, Profile Decorator, Theme Store); chat and account plugins (Quick Replies, Message Bookmarks, Chat Translator, Account Switcher, Advanced Search, Edit History, Deleted Message Indicator, Chat Exporter, Local Chat Archive); media and voice plugins (Emoji Organizer, GIF Favorites, Media Downloader, Image Preview Enhancer, Audio Player Customizer, Volume Booster, Voice Activity Indicator); productivity plugins (Reminder, Unread Channel Tracker, Custom Status Scheduler, Notification Rules, Focus Mode, Server Notes, Friend Notes); and developer tools (Plugin Error Console, Plugin Backup, Plugin Permissions, Plugin Importer, Compatibility Checker, Update Checker, Safe Mode, Custom CSS Editor, Layout Editor, Plugin Hub, Markdown Preview, Custom Timestamps).
 
-1. **Vexcord Installer:** Android interface for client version checks, patch status, installation progress, errors, and plugin management.
-2. **Vexcord Patch Engine:** compatible patch application, integrity checks, and rollback.
-3. **Plugin Hub:** discover, review permissions, install, update, disable, and remove compatible plugins.
-4. **Client build pipeline:** produce and test a modified APK, with signing and compatibility checks.
+Catalog entries marked `planned` are not working plugins yet. The next engineering milestone is connecting the standalone utilities to a native Android manager and a tested, compatible patch pipeline.
 
-## Planned plugin ideas
+## Security and limits
 
-- AMOLED theme and theme manager
-- Quick replies and message bookmarks
-- Chat translator
-- Account-switching shortcuts using supported account controls
-- Cosmetic Nitro-style previews only
-- Transparent local archive for content the user is authorized to save
+- Never collect or request Discord passwords, account tokens, or recovery codes.
+- Account switching must use supported authentication controls; no token extraction or authentication bypass.
+- Nitro-style features are cosmetic previews only and do not unlock paid entitlements.
+- Message logging/archive features must be transparent, local by default, and limited to content the user is authorized to save. No covert uploads.
+- Do not evade Discord rate limits or other platform safeguards.
+- Client modifications may break after updates and can carry account/service risks.
 
-No feature should steal account tokens, bypass authentication, evade platform rate limits, or secretly upload private messages. Cosmetic previews do not unlock paid Nitro entitlements.
+## Build status
 
-## Android APK builds
+The GitHub Actions workflow named **Build Vexcord Android APK** builds the current installer scaffold; it does not prove a patched client works. The **Validate Vexcord Patch Engine** workflow checks the catalog and JavaScript modules.
 
-The GitHub Actions workflow named **Build Vexcord Android APK** builds the current installer scaffold. A successful installer build does not mean a modified Discord client or plugin runtime is ready.
+- [GitHub Actions](https://github.com/drmmyboty/vexcord/actions)
+- [Releases](https://github.com/drmmyboty/vexcord/releases)
+- [Revenge Manager upstream](https://github.com/revenge-mod/revenge-manager)
+- [Revenge Bundle upstream](https://github.com/revenge-mod/revenge-bundle)
 
-Check the [GitHub Actions runs](https://github.com/drmmyboty/vexcord/actions) for build results and artifacts. The [Releases page](https://github.com/drmmyboty/vexcord/releases) is where finished, tested releases can be published.
-
-## Safety, privacy, and attribution
-
-- Vexcord is unofficial and is not affiliated with or endorsed by Discord.
-- Client modifications may break after Discord updates and may carry account or service risks.
-- Never share Discord passwords, account tokens, or recovery codes.
-- Any logging feature must be transparent, local by default, and limited to content the user is authorized to save.
-- Review the licenses and notices for the upstream [Revenge Manager](https://github.com/revenge-mod/revenge-manager) and [Revenge Bundle](https://github.com/revenge-mod/revenge-bundle). Required upstream attribution and license notices must remain, even as Vexcord's own user-facing branding is developed.
-
-## Contributions
-
-When reporting a bug, include the Android version, device model, expected behavior, and actual behavior. Never include passwords, tokens, private messages, or other sensitive information.
+Vexcord is not affiliated with or endorsed by Discord. Preserve all required upstream license and attribution notices.
