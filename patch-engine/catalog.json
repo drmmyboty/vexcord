@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "plugins": [
+    {
+      "id": "amoled-theme",
+      "name": "AMOLED Black",
+      "version": "0.1.0",
+      "description": "A true-black theme preset for supported Vexcord interface surfaces.",
+      "category": "Appearance",
+      "status": "planned",
+      "permissions": ["theme"]
+    },
+    {
+      "id": "theme-manager",
+      "name": "Theme Manager",
+      "version": "0.1.0",
+      "description": "Organize and switch compatible theme presets.",
+      "category": "Appearance",
+      "status": "planned",
+      "permissions": ["theme", "local-storage"]
+    },
+    {
+      "id": "quick-replies",
+      "name": "Quick Replies",
+      "version": "0.1.0",
+      "description": "Save reusable reply snippets locally for supported chat interfaces.",
+      "category": "Productivity",
+      "status": "planned",
+      "permissions": ["local-storage", "chat-ui"]
+    },
+    {
+      "id": "message-bookmarks",
+      "name": "Message Bookmarks",
+      "version": "0.1.0",
+      "description": "Bookmark messages that are accessible to the user, where supported.",
+      "category": "Productivity",
+      "status": "planned",
+      "permissions": ["local-storage", "chat-ui"]
+    },
+    {
+      "id": "chat-translator",
+      "name": "Chat Translator",
+      "version": "0.1.0",
+      "description": "Translate selected text through a configured translation provider; no provider is bundled.",
+      "category": "Productivity",
+      "status": "planned",
+      "permissions": ["chat-ui"]
+    },
+    {
+      "id": "account-switcher",
+      "name": "Account Switcher",
+      "version": "0.1.0",
+      "description": "A shortcut to supported account controls; never stores or extracts account tokens.",
+      "category": "Account",
+      "status": "planned",
+      "permissions": [],
+      "restrictions": ["No token access", "No authentication bypass"]
+    },
+    {
+      "id": "nitro-style",
+      "name": "Nitro Style Preview",
+      "version": "0.1.0",
+      "description": "Cosmetic previews and local styling only; does not unlock paid Nitro entitlements.",
+      "category": "Appearance",
+      "status": "planned",
+      "permissions": ["theme"]
+    },
+    {
+      "id": "local-chat-archive",
+      "name": "Local Chat Archive",
+      "version": "0.1.0",
+      "description": "A transparent local archive for content the user is authorized to save, where supported.",
+      "category": "Privacy",
+      "status": "planned",
+      "permissions": ["local-storage", "chat-ui"],
+      "restrictions": ["No covert collection", "No upload by default"]
+    }
+  ]
+}
