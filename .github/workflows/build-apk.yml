@@ -10,9 +10,10 @@ permissions:
 
 jobs:
   build:
+    name: Build original Vexcord Manager
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Vexcord repository
+      - name: Checkout Vexcord source
         uses: actions/checkout@v4
 
       - name: Set up Java
@@ -20,95 +21,28 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
+          cache: gradle
 
-      - name: Get Revenge Manager source
-        run: git clone --depth 1 https://github.com/revenge-mod/revenge-manager.git manager
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
 
-      - name: Apply Vexcord branding and client name
-        working-directory: manager
-        env:
-          CLIENT_NAME: Vexcord
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+
+      - name: Package plugin catalog into app
         run: |
-          python3 - <<'PY'
-          import os
-          import re
-          from pathlib import Path
+          mkdir -p app/src/main/assets
+          cp patch-engine/catalog.json app/src/main/assets/plugin-catalog.json
 
-          client_name = os.environ["CLIENT_NAME"].strip()
-          if not client_name or len(client_name) > 30 or any(ord(c) < 32 for c in client_name):
-              raise SystemExit("Client name must be 1–30 printable characters.")
+      - name: Build standalone Vexcord Manager APK
+        run: gradle --no-daemon assembleDebug
 
-          strings = Path("app/src/main/res/values/strings.xml")
-          content = strings.read_text()
-          old = '<string name="app_name" translatable="false">Revenge Manager</string>'
-          new = '<string name="app_name" translatable="false">Vexcord</string>'
-          if old not in content:
-              raise SystemExit("Could not find upstream manager app_name string; stopping rather than making an unbranded APK.")
-          content = content.replace(old, new, 1)
-          # Brand visible installer labels as Vexcord; keep upstream license/author notices intact.
-          content = content.replace("Downloading Revenge", "Downloading Vexcord")
-          content = content.replace("Injecting Revenge", "Injecting Vexcord")
-          content = content.replace("install Revenge for Discord", "install Vexcord for Discord")
-          strings.write_text(content)
-
-          # Replace the upstream launcher artwork with the Vexcord mark.
-          background = Path("app/src/main/res/drawable/ic_launcher_background.xml")
-          background.write_text("""<vector xmlns:android="http://schemas.android.com/apk/res/android"
-              android:width="108dp" android:height="108dp"
-              android:viewportWidth="512" android:viewportHeight="512">
-              <path android:pathData="M0,0h512v512h-512z" android:fillColor="#05070B"/>
-          </vector>""")
-          foreground = Path("app/src/main/res/drawable/ic_launcher_foreground.xml")
-          foreground.write_text("""<vector xmlns:android="http://schemas.android.com/apk/res/android"
-              android:width="108dp" android:height="108dp"
-              android:viewportWidth="512" android:viewportHeight="512">
-              <path android:pathData="M256,66 L411,155 L411,333 L256,423 L101,333 L101,155 Z"
-                  android:fillColor="#00000000" android:strokeColor="#087CFF" android:strokeWidth="20" android:strokeLineJoin="round"/>
-              <path android:pathData="M165,181 L256,128 L347,181 L347,285 L256,338 L165,285 Z"
-                  android:fillColor="#071B35" android:strokeColor="#37A0FF" android:strokeWidth="13" android:strokeLineJoin="round"/>
-              <path android:pathData="M190,270 L238,190 L238,244 L322,244 L274,324 L274,270 Z"
-                  android:fillColor="#45B4FF"/>
-          </vector>""")
-
-          gradle = Path("app/build.gradle.kts")
-          content = gradle.read_text()
-          replacements = {
-              'buildConfigField("String", "MOD_NAME", "\\\"Revenge\\\"")':
-                  'buildConfigField("String", "MOD_NAME", ' + '"' + '\\\"' + client_name.replace('\\\\', '\\\\\\\\').replace('"', '\\\\"') + '\\\"' + '"' + ')',
-              'buildConfigField("String", "MANAGER_NAME", "\\\"RevengeManager\\\"")':
-                  'buildConfigField("String", "MANAGER_NAME", "\\\"Vexcord\\\"")',
-              'buildConfigField("String", "REPO", "\\\"revenge-mod/bundle\\\"")':
-                  'buildConfigField("String", "REPO", "\\\"revenge-mod/revenge-bundle\\\"")',
-          }
-          for before, after in replacements.items():
-              if before not in content:
-                  raise SystemExit("Expected upstream setting was not found: " + before)
-              content = content.replace(before, after, 1)
-
-          # Use Discord's familiar blurple for the patched client's icon backgrounds.
-          for key, value in {
-              'MODDED_APP_ICON': '0xFF5865F2',
-              'MODDED_APP_ICON_ALPHA': '0xFF5865F2',
-              'MODDED_APP_ICON_OTHER': '0xFF5865F2',
-          }.items():
-              pattern = r'(buildConfigField\("int", "' + key + r'", )"0x[0-9A-Fa-f]+"(\))'
-              content, count = re.subn(pattern, r'\1"' + value + r'"\2', content, count=1)
-              if count != 1:
-                  raise SystemExit("Could not set Discord-style icon color for " + key)
-
-          gradle.write_text(content)
-          PY
-
-      - name: Build release APK
-        working-directory: manager
-        run: |
-          chmod +x gradlew
-          ./gradlew assembleRelease --no-daemon
-
-      - name: Upload Vexcord installer APK
+      - name: Upload Vexcord Manager APK
         uses: actions/upload-artifact@v4
         with:
-          name: vexcord-installer-apk
-          path: manager/app/build/outputs/apk/release/*.apk
+          name: Vexcord-Manager-APK
+          path: app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
           retention-days: 14
