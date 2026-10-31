@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Vexcord Plugin Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "name", "version", "description", "minVexcordVersion", "permissions", "entry"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]{1,63}$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 300
+    },
+    "minVexcordVersion": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "permissions": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "enum": ["theme", "local-storage", "notifications", "chat-ui", "media"]
+      }
+    },
+    "entry": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9_./-]+\\.js$"
+    }
+  }
+}
