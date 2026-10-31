@@ -1,0 +1,16 @@
+{
+  "name": "vexcord-patch-engine",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Vexcord plugin manifest validator and local plugin-state manager",
+  "type": "module",
+  "scripts": {
+    "list": "node index.js list",
+    "validate": "node index.js validate",
+    "enable": "node index.js enable",
+    "disable": "node index.js disable"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
