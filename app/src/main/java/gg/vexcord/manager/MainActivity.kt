@@ -9,6 +9,7 @@ import android.graphics.Typeface
 import android.view.Gravity
 import android.view.View
 import android.widget.*
+import android.provider.OpenableColumns
 import org.json.JSONObject
 
 class MainActivity : Activity() {
@@ -16,6 +17,9 @@ class MainActivity : Activity() {
     private val panel = Color.rgb(18, 24, 35)
     private val blue = Color.rgb(55, 150, 255)
     private val prefs by lazy { getSharedPreferences("vexcord_plugins", MODE_PRIVATE) }
+    private var selectedApk: Uri? = null
+    private lateinit var selectedLabel: TextView
+    private lateinit var installButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +54,27 @@ class MainActivity : Activity() {
         }
         content.addView(status)
         content.addView(label("Manage local plugin preferences. Toggles save on this device.", 13, Color.LTGRAY))
+        content.addView(space(18))
+        content.addView(section("APK INSTALLER"))
+        content.addView(cardText("Choose an APK", "Select an APK on your device, then hand it to Android's normal installer. Only install files from sources you trust."))
+        content.addView(Button(this).apply {
+            text = "Choose APK"
+            setOnClickListener {
+                startActivityForResult(Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                    addCategory(Intent.CATEGORY_OPENABLE)
+                    type = "application/vnd.android.package-archive"
+                }, 410)
+            }
+        }, LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(8) })
+        selectedLabel = label("No APK selected", 12, Color.LTGRAY)
+        content.addView(selectedLabel)
+        installButton = Button(this).apply {
+            text = "Install selected APK"
+            isEnabled = false
+            setOnClickListener { installSelectedApk() }
+        }
+        content.addView(installButton, LinearLayout.LayoutParams(-1, -2))
+        content.addView(cardText("Patching status", "This build can select an APK and launch Android's installer. It does not yet patch Discord's client bundle or create a modified Discord APK."))
         content.addView(space(18))
         content.addView(section("PLUGIN LIBRARY"))
         val catalog = try {
@@ -106,6 +131,46 @@ class MainActivity : Activity() {
         scroll.addView(content)
         root.addView(scroll, LinearLayout.LayoutParams(-1, 0, 1f))
         setContentView(root)
+    }
+
+    @Deprecated("Legacy activity result API retained for compatibility")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode != 410 || resultCode != RESULT_OK) return
+        val uri = data?.data ?: return
+        val validArchive = try {
+            contentResolver.openInputStream(uri)?.use { input ->
+                val header = ByteArray(4)
+                input.read(header) == 4 && header[0] == 0x50.toByte() && header[1] == 0x4b.toByte()
+            } ?: false
+        } catch (_: Exception) { false }
+        if (!validArchive) {
+            selectedApk = null
+            selectedLabel.text = "This file does not look like an APK archive."
+            installButton.isEnabled = false
+            return
+        }
+        selectedApk = uri
+        val filename = try {
+            contentResolver.query(uri, null, null, null, null)?.use { cursor ->
+                val column = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                if (cursor.moveToFirst() && column >= 0) cursor.getString(column) else null
+            }
+        } catch (_: Exception) { null }
+        selectedLabel.text = "Selected: ${filename ?: "APK file"}"
+        installButton.isEnabled = true
+    }
+
+    private fun installSelectedApk() {
+        val uri = selectedApk ?: return
+        try {
+            startActivity(Intent(Intent.ACTION_INSTALL_PACKAGE).apply {
+                data = uri
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            })
+        } catch (e: Exception) {
+            Toast.makeText(this, "Could not open Android installer: ${e.message ?: "unknown error"}", Toast.LENGTH_LONG).show()
+        }
     }
 
     private fun label(textValue: String, size: Int, color: Int, bold: Boolean = false) =
