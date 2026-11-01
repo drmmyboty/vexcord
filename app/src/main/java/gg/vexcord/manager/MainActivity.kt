@@ -55,8 +55,8 @@ class MainActivity : Activity() {
         content.addView(status)
         content.addView(label("Manage local plugin preferences. Toggles save on this device.", 13, Color.LTGRAY))
         content.addView(space(18))
-        content.addView(section("APK INSTALLER"))
-        content.addView(cardText("Choose an APK", "Select an APK on your device, then hand it to Android's normal installer. Only install files from sources you trust."))
+        content.addView(section("VEXCORD PATCH INSTALLER"))
+        content.addView(cardText("Select Discord APK", "Choose the Discord APK you want to work with. Vexcord will only install a modified package after its own patching and signing pipeline is implemented."))
         content.addView(Button(this).apply {
             text = "Choose APK"
             setOnClickListener {
@@ -74,7 +74,7 @@ class MainActivity : Activity() {
             setOnClickListener { installSelectedApk() }
         }
         content.addView(installButton, LinearLayout.LayoutParams(-1, -2))
-        content.addView(cardText("Patching status", "This build can select an APK and launch Android's installer. It does not yet patch Discord's client bundle or create a modified Discord APK."))
+        content.addView(cardText("Patching status", "This build can select an APK and pass it to Android's installer. Vexcord's own Discord patching and signing engine is still under development; this button does not patch the selected APK."))
         content.addView(space(18))
         content.addView(section("PLUGIN LIBRARY"))
         val catalog = try {
