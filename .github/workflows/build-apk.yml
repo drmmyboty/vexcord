@@ -1,4 +1,4 @@
-name: Build Vexcord Android APK
+name: Build Vexcord APK
 
 on:
   push:
@@ -6,14 +6,14 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build:
-    name: Build original Vexcord Manager
+    name: Build Vexcord standalone APK
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Vexcord source
+      - name: Checkout Vexcord
         uses: actions/checkout@v4
 
       - name: Set up Java
@@ -30,10 +30,8 @@ jobs:
           SDKMANAGER="$(find "$SDK_ROOT/cmdline-tools" -type f -name sdkmanager 2>/dev/null | sort -V | tail -n 1)"
           if [ -z "$SDKMANAGER" ]; then
             echo "sdkmanager was not found under $SDK_ROOT/cmdline-tools"
-            find "$SDK_ROOT" -maxdepth 4 -type f -name sdkmanager 2>/dev/null || true
             exit 1
           fi
-          echo "Using Android SDK manager: $SDKMANAGER"
           yes | "$SDKMANAGER" --licenses >/dev/null || true
           "$SDKMANAGER" --install "platforms;android-35" "build-tools;35.0.0" "platform-tools"
 
@@ -42,18 +40,25 @@ jobs:
         with:
           gradle-version: '8.9'
 
-      - name: Package plugin catalog into app
-        run: |
-          mkdir -p app/src/main/assets
-          cp patch-engine/catalog.json app/src/main/assets/plugin-catalog.json
-
-      - name: Build standalone Vexcord Manager APK
+      - name: Build Vexcord APK
         run: gradle --no-daemon assembleDebug
 
-      - name: Upload Vexcord Manager APK
+      - name: Rename APK
+        run: cp app/build/outputs/apk/debug/app-debug.apk Vexcord.apk
+
+      - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Vexcord-Manager-APK
-          path: app/build/outputs/apk/debug/app-debug.apk
+          name: Vexcord-APK
+          path: Vexcord.apk
           if-no-files-found: error
-          retention-days: 14
+          retention-days: 30
+
+      - name: Publish direct APK download
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest
+          name: Vexcord Latest
+          make_latest: true
+          files: Vexcord.apk
+          fail_on_unmatched_files: true
